@@ -1,48 +1,46 @@
 <template>
-    <div v-if="showData.length" class="col-md-9">
         <div class="show-data">
                 <h2>假條一覽</h2>
-                <!-- <button class="btn btn-primary" @click="printData"><font-awesome-icon :icon="['fas', 'print']" />列印</button> -->
                 <div class="show-item">
                     <ul>
-                        <ItemList 
+                        <ItemList2 
                             v-for="d in showData" 
                             :key="d.id"
                             :data="d"
+                            v-bind="$attrs"
                         />
                     </ul>
                 </div>
         </div>
-    </div>
 </template>
 
 <script>
-    import ItemList from './ItemList.vue'
+    import ItemList2 from './ItemList2.vue'
     export default {
-        name:'ShowItem',
+        name:'ShowItem2',
         props:['showData'], 
-        components:{ItemList},
-        methods: {
-            printData(){
-                window.print()
+        components:{ItemList2},
+        data(){
+            return {
+                msg:'6666'
             }
-        },
+        }
     }
 </script>
 
 <style scoped>
     .show-data{
-        background-color:rgb(242, 241, 232);
-        padding:1.5em;
-        margin:0 0 3rem 0;
+        width:100%;
+        background: lightcyan;
     }
     .show-data h2{
         display: block;
         text-align: center;
-        font-size: calc(1.325rem + .9vw);
-        font-weight: 600;
+        margin: 0.5rem auto;
     }
     .show-item{
+        height:20vh;
+        overflow-y: scroll;
         margin: 0 auto;
         border-top:  2px rgb(15, 158, 156) dashed;
     }
@@ -55,15 +53,5 @@
     .show-item ul li{
         padding: 0.5rem;
         border-bottom: 2px rgb(15, 158, 156) dashed;
-    }
-
-    @media print{
-        *{
-            print-color-adjust:exact;
-            -webkit-print-color-adjust:exact !important;
-        }
-        .noPrint {
-            display: none;
-        }
     }
 </style>

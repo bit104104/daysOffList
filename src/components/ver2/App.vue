@@ -1,28 +1,17 @@
 <template>
-        <div id="root" class="container">
-            <div class="row justify-content-center">
-                <Count :countDaysOff="countDaysOff" />
-                <ClearData 
-                    :emptyAllItem="emptyAllItem" 
-                    :resetDaysOff="resetDaysOff"
-                />
-                <AddItem :allDaysOff="allDaysOff"/>
-                <ShowItem :showData="ShowData"/>
-            </div>
-
-            <!-- original 
+        <div id="root">
             <div class="todo-container2">
                 <div class="reset-btn">
                     <button class="btn btn-danger" @click="emptyAllItem">清空假條資料</button>
                     <button class="btn btn-danger" @click="resetDaysOff">特休天數重置</button>
                 </div>
+
                 <div class="todo-wrap2">
                     <Count :countDaysOff="countDaysOff" />
                     <AddItem />
                     <ShowItem :showData="ShowData"/>
                 </div>
-            </div> -->
-            <!-- original end-->
+            </div>
         </div>
 </template>
 
@@ -30,13 +19,12 @@
     import AddItem from './components/AddItem'
     import Count from './components/Count'
     import ShowItem from './components/ShowItem'
-    import ClearData from './components/ClearData'
     // 引入axios
     import axios from 'axios'
 
     export default {
         name:'App',
-        components:{Count, AddItem, ShowItem, ClearData},
+        components:{Count, AddItem, ShowItem},
         data(){
             return {
                 // allDaysOff:3,
@@ -59,10 +47,12 @@
             countDaysOff(){
                 const x = [ this.allDaysOff, this.hr_count,];
                 const y = x.map((item,i)=>{
+                    // if(x[0] == 0){ return `0天`}
                     let calc = (i == 0) ? item - (x[1] / this.workHr) : (item / this.workHr);
                     let day_calc = Math.trunc(calc);
                     let hr_calc = (calc - day_calc) / this.oneHourNum;
-                    return (day_calc<0 || hr_calc<0) ? `0 天 0 小時` : `${day_calc} 天 ${hr_calc} 小時`
+                    // let title = (i != 0 && i==1) ? '剩餘':'已請';
+                    return `${day_calc} 天 ${hr_calc} 小時`
                 });
                 y.unshift(`${x[0]} 天`);
                 return y
@@ -154,13 +144,80 @@
         }
     }
 </script>
-<style lang="css">
-    body{
-        background: rgba(0, 0, 0, 0.694);
+
+<style>
+    /*base*/
+    body {
+    background: #fff;
     }
-    /* .row{ */
-    #root{
-        background: lightblue;
+
+    .btn {
+        display: inline-block;
+        padding: 4px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        line-height: 20px;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+        border-radius: 4px;
+    }
+
+    .btn-danger {
+        color: #fff;
+        background-color: #da4f49;
+        border: 1px solid #bd362f;
+    }
+    .btn-edit {
+        color: #fff;
+        background-color: #1b64be;
+        border: 1px solid #124078;
+        margin-right: 5px;
+    }
+
+    .btn-danger:hover {
+    color: #fff;
+    background-color: #bd362f;
+    }
+    .btn-edit:hover {
+    color: #fff;
+    background-color: #124078;
+    } 
+    .reset-btn{
+        background-color: #7f7ebd;
+    }
+
+    .btn:focus {
+    outline: none;
+    }
+
+    .todo-container {
+    width: 600px;
+    margin: 0 auto;
+    }
+    .todo-container .todo-wrap {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    /* holiday_count */
+    .todo-container2 {
+        width: 600px;
+        margin: 0 auto;
+        min-width: 320px;
+        max-width: 800px;
+        margin: 0 auto;
+
+    }
+    .todo-container2 .todo-wrap2 {
+        width: 100%;
+        display: flex;
+        flex-flow: row;
+        flex-wrap: wrap;
+        border: 2px solid #2f2f2f;
+        border-radius: 5px;
     }
 
 </style>
