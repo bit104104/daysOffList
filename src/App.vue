@@ -1,28 +1,15 @@
 <template>
         <div id="root" class="container">
             <div class="row justify-content-center">
-                <Count :countDaysOff="countDaysOff" />
-                <ClearData 
+                <Count :countDaysOff="countDaysOff"/>
+                <ClearData
+                    class="noPrint"
                     :emptyAllItem="emptyAllItem" 
                     :resetDaysOff="resetDaysOff"
                 />
-                <AddItem :allDaysOff="allDaysOff"/>
+                <AddItem class="noPrint" :allDaysOff="allDaysOff"/>
                 <ShowItem :showData="ShowData"/>
             </div>
-
-            <!-- original 
-            <div class="todo-container2">
-                <div class="reset-btn">
-                    <button class="btn btn-danger" @click="emptyAllItem">清空假條資料</button>
-                    <button class="btn btn-danger" @click="resetDaysOff">特休天數重置</button>
-                </div>
-                <div class="todo-wrap2">
-                    <Count :countDaysOff="countDaysOff" />
-                    <AddItem />
-                    <ShowItem :showData="ShowData"/>
-                </div>
-            </div> -->
-            <!-- original end-->
         </div>
 </template>
 
@@ -31,6 +18,7 @@
     import Count from './components/Count'
     import ShowItem from './components/ShowItem'
     import ClearData from './components/ClearData'
+    import './css/print.less'
     // 引入axios
     import axios from 'axios'
 
@@ -39,14 +27,10 @@
         components:{Count, AddItem, ShowItem, ClearData},
         data(){
             return {
-                // allDaysOff:3,
                 allDaysOff:JSON.parse(localStorage.getItem('allDaysOff')) || 0,
                 workHr:8,
                 oneHourNum:0.125,
                 dayoffList:JSON.parse(localStorage.getItem('dayoffList')) || [],
-                // dayoffList:[
-		        //     {id:nanoid(), day:'2022/08/07', hr:8, item:'特休', isShow:true},
-                // ]
             }
         },
         computed:{
@@ -103,12 +87,46 @@
             emptyAllItem(){
                 // 這樣設定雖會清空，但vue不會監視到數據變化而自動刷新模板(只能頁面刷新)
                 // 指定響應式數據為空，促使模板更新
-                localStorage.removeItem('dayoffList');
-                this.dayoffList = [];
+                this.$swal('是否清空?', '清空後將無法還原資料!', 'warning', {
+                        buttons: {
+                            cancel: {
+                                text: "取消",
+                                visible: true
+                            },
+                            confirm: {
+                                text: "清空",
+                                visible: true
+                            }
+                        },
+                        dangerMode: true,
+                }).then((value) => {
+                    if(value == true) {
+                        localStorage.removeItem('dayoffList');
+                        this.dayoffList = [];
+                        this.$swal("Success", `清空成功！`, "success");
+                    }
+                })
             },
             resetDaysOff(){
-                localStorage.removeItem('allDaysOff');
-                this.allDaysOff = 0;
+                this.$swal('特休總計是否歸零?', '總計天數會重置，但原有的假條資料會保留!', 'warning', {
+                        buttons: {
+                            cancel: {
+                                text: "取消",
+                                visible: true
+                            },
+                            confirm: {
+                                text: "歸零",
+                                visible: true
+                            }
+                        },
+                        dangerMode: true,
+                }).then((value) => {
+                    if(value == true) {
+                        localStorage.removeItem('allDaysOff');
+                        this.allDaysOff = 0;
+                        this.$swal("Success", `歸零成功！`, "success");
+                    }
+                })
             }
         },
         watch:{
@@ -158,9 +176,7 @@
     body{
         background: rgba(0, 0, 0, 0.694);
     }
-    /* .row{ */
     #root{
         background: lightblue;
     }
-
 </style>

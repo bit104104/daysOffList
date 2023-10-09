@@ -135,6 +135,7 @@
     }
     .add-list button, .add-holiday button{
         margin:0.75em 0;
+        font-weight: 600;
     }
     @media screen and (max-width: 960px) {
         .add-list, .add-holiday{

@@ -16,12 +16,7 @@
 <script>
     export default {
         name:'ClearData',
-        props:['emptyAllItem', 'resetDaysOff'],
-        data(){
-            return{
-
-            }
-        }
+        props:['emptyAllItem', 'resetDaysOff']
     }
 </script>
 

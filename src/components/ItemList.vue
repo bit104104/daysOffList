@@ -1,5 +1,5 @@
 <template>
-        <li ref="print-area">
+        <li>
             <button v-if="!data.isEdit" class="btn btn-info" @click="emitEdit(data)">編輯</button>
             <button v-if="data.isEdit" class="btn btn-info" @click="emitUpdate(data, $event)">更新</button>
             <button v-if="!data.isEdit" class="btn btn-danger" @click="emitDel(data.id)">刪除</button>
@@ -90,8 +90,9 @@
                     (   this.$swal("Error", `欄位不能填空！`, "error"), 
                         this.$set(data, 'isEdit', ifEdit)
                     );
-            }
-        }  
+            },
+
+        }
     }
 </script>
 

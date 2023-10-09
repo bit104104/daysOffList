@@ -2,10 +2,12 @@
     <div v-if="showData.length" class="col-md-9">
         <div class="show-data">
                 <h2>假條一覽</h2>
-                <!-- <button class="btn btn-primary" @click="printData"><font-awesome-icon :icon="['fas', 'print']" />列印</button> -->
+                <button class="btn btn-primary btn-set" @click="printData">
+                    <font-awesome-icon :icon="['fas', 'print']" />列印
+                </button>
                 <div class="show-item">
                     <ul>
-                        <ItemList 
+                        <ItemList class="noBreak"
                             v-for="d in showData" 
                             :key="d.id"
                             :data="d"
@@ -26,7 +28,7 @@
             printData(){
                 window.print()
             }
-        },
+        }
     }
 </script>
 
@@ -56,14 +58,10 @@
         padding: 0.5rem;
         border-bottom: 2px rgb(15, 158, 156) dashed;
     }
-
-    @media print{
-        *{
-            print-color-adjust:exact;
-            -webkit-print-color-adjust:exact !important;
-        }
-        .noPrint {
-            display: none;
-        }
+    .btn-set{
+        display: block;
+        margin: 0 0 1rem auto;
+        text-align: center;
+        font-weight: 600;
     }
 </style>
