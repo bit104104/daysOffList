@@ -80,16 +80,28 @@
                         item:this.$refs.item.value,
                         isShow:data.isShow
                 };
+  
                 let ifEdit = Object.prototype.hasOwnProperty.call(data, 'isEdit');
-                let isAllnull = Object.values(updData).every(v => v != '');
-                    (isAllnull && ifEdit) ? 
+                // 防呆-時數不可為空值，且驗證是否為有編輯欄位
+                    (updData.hr != '' && ifEdit) ?
                     (   this.$swal("Success", `更新完成！`, "success"), 
                         data.isEdit = !ifEdit, this.$bus.$emit('updateDate', updData)
                     )
                     :
-                    (   this.$swal("Error", `欄位不能填空！`, "error"), 
+                    (   this.$swal("Error", `時數必填！`, "error"), 
                         this.$set(data, 'isEdit', ifEdit)
                     );
+
+                // 防呆-資料皆不可為空值，且驗證是否為有編輯欄位
+                    // let isAllnull = Object.values(updData).every(v => v != '');
+                    //     (isAllnull && ifEdit) ? 
+                    //     (   this.$swal("Success", `更新完成！`, "success"), 
+                    //         data.isEdit = !ifEdit, this.$bus.$emit('updateDate', updData)
+                    //     )
+                    //     :
+                    //     (   this.$swal("Error", `欄位不能填空！`, "error"), 
+                    //         this.$set(data, 'isEdit', ifEdit)
+                    //     );
             },
 
         }
